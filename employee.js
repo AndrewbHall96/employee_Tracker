@@ -10,3 +10,10 @@ var connection = mysql.createConnection({
     password: "Cookie123",
     database: "employee_db"
 });
+
+connection.connect(function(err) {
+    if (err) throw err;
+    console.log("connected as id " + connection.threadId);
+  
+    // createEmployee();
+  });
