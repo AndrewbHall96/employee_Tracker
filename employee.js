@@ -27,8 +27,18 @@ function mainMenu() {
             message: "What would you like to do?",
             name: "menuChoice",
             type: "list",
-            choices: ["View All Employees", "View All EMployees By Department", "View All EMployees By Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manger"]
+            choices: [  "View All Employees", "View All Employees By Department", "View All Employees By Manager", "Add Employee", "Add department", "Remove Employee", "Update Employee Role", "Update Employee Manger"]
         }
+// Bonus function
+        // function mainMenu() {
+        //     inquirer.prompt([
+        //         {
+        //             message: "What would you like to do?",
+        //             name: "menuChoice",
+        //             type: "list",
+        //             choices: [  "View All Employees", "View All EMployees By Department", "View All EMployees By Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manger"]
+        //         }
+
     ]).then(function (answer) {
         switch (answer.myChoice) {
             case "View All Employees":
