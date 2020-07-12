@@ -27,7 +27,7 @@ function mainMenu() {
             message: "What would you like to do?",
             name: "menuChoice",
             type: "list",
-            choices: ["View All Employees", "View All Employees By Department", "View All Employees By Manager", "Add Employee", "Add department", "Remove Employee", "Update Employee Role", "Update Employee Manger", "Quit"]
+            choices: ["View All Departments, Roles or Employees", "Add Department, Role or Employee", "Update Employee Roles", "Quit"]
         }
         // Bonus function
         // function mainMenu() {
@@ -40,40 +40,19 @@ function mainMenu() {
         //         }
 
     ]).then(function (answer) {
-        if (answer.menuChoice === "View All Employees") {
-            console.log("Data List")
+        if (answer.menuChoice === "View All Departments, Roles or Employees") {
+            function ADD()
         } else if (
-            answer.menuChoice === "View All Employees By Department"
-        ) {
-            console.log("insert function")
-        } else if (
-            answer.menuChoice === "View All Employees By Manager"
-        ) {
-            console.log(X)
-        } else if (
-            answer.menuChoice === "Add Employee"
+            answer.menuChoice === "Add Department, Role or Employee"
         ) {
             console.log("X")
         } else if (
-            answer.menuChoice === "Add department"
+            answer.menuChoice === "Update Employee Roles"
         ) {
             console.log("B")
-        } else if (
-            answer.menuChoice === "Update Employee Role"
-        ) {
-            console.log("Update")
-        } else if (
-            answer.menuChoice === "Update Employee Manger"
-        ) {
-            console.log("Update")
-        } else if (
-            answer.menuChoice === "Quit"
-        ) {
-            console.log("Quite")
+        } else {
+            connection.end();
         }
-
-
-
 
         // switch example:
         // switch (answer.menuChoice) {
@@ -82,4 +61,31 @@ function mainMenu() {
         //         break;
         // }
     })
+};
+
+function ADD() {
+    inquirer
+    prompt([
+        {
+            name: "menuADD",
+            type: "list",
+            choices: ["Add Department", "Add Role", "Add Employee"]
+        }
+
+    ]).then(function (answer) {
+        if (answer.menuADD === "Add Department") {
+            console.log("Added Department")
+        } else if (
+            answer.menuChoice === "Add Role"
+        ) {
+            console.log("Added Role")
+        } else if (
+            answer.menuChoice === "Add Employee"
+        ) {
+            console.log("Added Employee")
+        } else {
+            connection.end();
+        }
+    }
+    )
 };
