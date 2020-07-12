@@ -89,3 +89,30 @@ function ADD() {
     }
     )
 };
+
+function VIEW() {
+    inquirer
+    prompt([
+        {
+            name: "menuVIEW",
+            type: "list",
+            choices: ["View Departments", "View Roles", "View Employees"]
+        }
+
+    ]).then(function (answer) {
+        if (answer.menuVIEW === "View Departments") {
+            console.log("Viewing Departments")
+        } else if (
+            answer.menuChoice === "View Roles"
+        ) {
+            console.log("Viewing Roles")
+        } else if (
+            answer.menuChoice === "View Employees"
+        ) {
+            console.log("Viewing Employees")
+        } else {
+            connection.end();
+        }
+    }
+    )
+};
