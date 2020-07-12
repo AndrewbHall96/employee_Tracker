@@ -40,12 +40,12 @@ function mainMenu() {
         //         }
 
     ]).then(function (answer) {
-        if (answer.menuChoice === "View All Departments, Roles or Employees") {
-            function ADD()
-        } else if (
+        if (
             answer.menuChoice === "Add Department, Role or Employee"
         ) {
-            console.log("X")
+            ADD();
+        } else if (answer.menuChoice === "View All Departments, Roles or Employees") {
+            VIEW();
         } else if (
             answer.menuChoice === "Update Employee Roles"
         ) {
@@ -65,54 +65,54 @@ function mainMenu() {
 
 function ADD() {
     inquirer
-    prompt([
-        {
-            name: "menuADD",
-            type: "list",
-            choices: ["Add Department", "Add Role", "Add Employee"]
-        }
+        .prompt([
+            {
+                name: "menuADD",
+                type: "list",
+                choices: ["Add Department", "Add Role", "Add Employee"]
+            }
 
-    ]).then(function (answer) {
-        if (answer.menuADD === "Add Department") {
-            console.log("Added Department")
-        } else if (
-            answer.menuChoice === "Add Role"
-        ) {
-            console.log("Added Role")
-        } else if (
-            answer.menuChoice === "Add Employee"
-        ) {
-            console.log("Added Employee")
-        } else {
-            connection.end();
+        ]).then(function (answer) {
+            if (answer.menuADD === "Add Department") {
+                console.log("Added Department")
+            } else if (
+                answer.menuChoice === "Add Role"
+            ) {
+                console.log("Added Role")
+            } else if (
+                answer.menuChoice === "Add Employee"
+            ) {
+                console.log("Added Employee")
+            } else {
+                connection.end();
+            }
         }
-    }
-    )
+        )
 };
 
 function VIEW() {
     inquirer
-    prompt([
-        {
-            name: "menuVIEW",
-            type: "list",
-            choices: ["View Departments", "View Roles", "View Employees"]
-        }
+        .prompt([
+            {
+                name: "menuVIEW",
+                type: "list",
+                choices: ["View Departments", "View Roles", "View Employees"]
+            }
 
-    ]).then(function (answer) {
-        if (answer.menuVIEW === "View Departments") {
-            console.log("Viewing Departments")
-        } else if (
-            answer.menuChoice === "View Roles"
-        ) {
-            console.log("Viewing Roles")
-        } else if (
-            answer.menuChoice === "View Employees"
-        ) {
-            console.log("Viewing Employees")
-        } else {
-            connection.end();
+        ]).then(function (answer) {
+            if (answer.menuVIEW === "View Departments") {
+                console.log("Viewing Departments")
+            } else if (
+                answer.menuChoice === "View Roles"
+            ) {
+                console.log("Viewing Roles")
+            } else if (
+                answer.menuChoice === "View Employees"
+            ) {
+                console.log("Viewing Employees")
+            } else {
+                connection.end();
+            }
         }
-    }
-    )
+        )
 };
