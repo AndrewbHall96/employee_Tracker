@@ -75,22 +75,57 @@ function ADD() {
 
         ]).then(function (answer) {
 
-            if (answer.menuADD === "Add Department") {
-                console.log("Added Department")
-            } else if (
-                answer.menuChoice === "Add Role"
-            ) {
-                console.log("Added Role")
-            } else if (
-                answer.menuChoice === "Add Employee"
-            ) {
-                console.log("Added Employee")
-            } else {
-                connection.end();
+            switch (answer.menuADD) {
+                case "AddDept":
+                case "Add Department":
+                    newDepartment();
+                    break;
+                case "Add Role":
+
             }
+
+            connection.query("INSERT INTO ")
+
+            // if (answer.menuADD === "Add Department") {
+            //     console.log("Added Department")
+            // } else if (
+            //     answer.menuChoice === "Add Role"
+            // ) {
+            //     console.log("Added Role")
+            // } else if (
+            //     answer.menuChoice === "Add Employee"
+            // ) {
+            //     console.log("Added Employee")
+            // } else {
+            //     connection.end();
+            // }
+
+
         }
         )
 };
+function newDepartment() {
+    inquirer
+        .prompt([
+            {
+                name: "deptName",
+                type: "input",
+            }]).then(function (newDepartment) {
+                connection.query("INSERT INTO department('name') VALUES (?)", [newDepartment.deptName], function (err, data) {
+                    if (err)
+                        throw err;
+
+                    console.log(`${data.affectedRows} department added!`);
+
+                    mainMenu();
+                });
+            });
+}
+// deconstructed way= 
+// }]).then(function({deptName}) {
+//     connection.query("INSERT INTO department('name') VALUES (?)", [deptName]
+// })
+
 
 function VIEW() {
     inquirer
