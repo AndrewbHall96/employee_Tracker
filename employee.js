@@ -24,10 +24,10 @@ mainMenu()
 function mainMenu() {
     inquirer.prompt([
         {
-            message: "What would you like to do?",
+            message: "Would you like to Add, View, or Update a department, Role or Employee?",
             name: "menuChoice",
             type: "list",
-            choices: ["View All Departments, Roles or Employees", "Add Department, Role or Employee", "Update Employee Roles", "Quit"]
+            choices: ["Add", "View", "Update"]
         }
         // Bonus function
         // function mainMenu() {
@@ -41,18 +41,19 @@ function mainMenu() {
 
     ]).then(function (answer) {
         if (
-            answer.menuChoice === "Add Department, Role or Employee"
+            answer.menuChoice === "Add"
         ) {
             ADD();
-        } else if (answer.menuChoice === "View All Departments, Roles or Employees") {
+        } else if (answer.menuChoice === "View") {
             VIEW();
         } else if (
-            answer.menuChoice === "Update Employee Roles"
+            answer.menuChoice === "Update"
         ) {
             console.log("B")
         } else {
             connection.end();
         }
+        //Recursion
 
         // switch example:
         // switch (answer.menuChoice) {
@@ -73,6 +74,7 @@ function ADD() {
             }
 
         ]).then(function (answer) {
+
             if (answer.menuADD === "Add Department") {
                 console.log("Added Department")
             } else if (
@@ -108,6 +110,33 @@ function VIEW() {
                 console.log("Viewing Roles")
             } else if (
                 answer.menuChoice === "View Employees"
+            ) {
+                console.log("Viewing Employees")
+            } else {
+                connection.end();
+            }
+        }
+        )
+};
+
+function updateEmp() {
+    inquirer
+        .prompt([
+            {
+                name: "menuUPDATE",
+                type: "list",
+                choices: ["Update Departments", "Update Roles", "Update Employees"]
+            }
+
+        ]).then(function (answer) {
+            if (answer.menuUPDATE === "Update Departments") {
+                console.log("Updating Departments")
+            } else if (
+                answer.menuUPDATE === "Update Roles"
+            ) {
+                console.log("Updating Roles")
+            } else if (
+                answer.menuUPDATE === "Update Employees"
             ) {
                 console.log("Viewing Employees")
             } else {
