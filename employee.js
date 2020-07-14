@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+require("console.table")
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -27,7 +28,7 @@ function mainMenu() {
             message: "Would you like to Add, View, or Update a department, Role or Employee?",
             name: "menuChoice",
             type: "list",
-            choices: ["Add", "View", "Update"]
+            choices: ["Add", "View", "Update", "Exit"]
         }
         // Bonus function
         // function mainMenu() {
@@ -82,9 +83,10 @@ function ADD() {
                     break;
                 case "Add Role":
 
+
             }
 
-            connection.query("INSERT INTO ")
+            // connection.query("INSERT INTO ")
 
             // if (answer.menuADD === "Add Department") {
             //     console.log("Added Department")
@@ -111,7 +113,7 @@ function newDepartment() {
                 name: "deptName",
                 type: "input",
             }]).then(function (newDepartment) {
-                connection.query("INSERT INTO department('name') VALUES (?)", [newDepartment.deptName], function (err, data) {
+                connection.query("INSERT INTO department(name) VALUES (?)", [newDepartment.deptName], function (err, data) {
                     if (err)
                         throw err;
 
@@ -120,7 +122,37 @@ function newDepartment() {
                     mainMenu();
                 });
             });
-}
+};
+function newEmployee() {
+    inquirer
+        .prompt([
+            {
+                name: "first_name",
+                type: "input",
+            },
+            {
+                name: "last_name",
+                type: "input",
+            },
+            {
+                name: "role_id",
+                type: "input",
+            },
+            {
+                name: "manager_id",
+                type: "input",
+            }
+        ]).then(function (newEmployee) {
+            connection.query("INSERT INTO employee(name) VALUES (?, ?, ?, ?)", [newEmployee.first_name, newEmployee.last_name, newEmployee.role_id, newEmployee.manager_id], function (err, data) {
+                if (err)
+                    throw err;
+
+                console.log(`${data.affectedRows} department added!`);
+
+                mainMenu();
+            });
+        });
+};
 // deconstructed way= 
 // }]).then(function({deptName}) {
 //     connection.query("INSERT INTO department('name') VALUES (?)", [deptName]
@@ -131,25 +163,32 @@ function VIEW() {
     inquirer
         .prompt([
             {
-                name: "menuVIEW",
+                name: "tableName",
                 type: "list",
-                choices: ["View Departments", "View Roles", "View Employees"]
+                choices: [
+                    {
+                        name: "View Departments",
+                        value: "department"
+                    },
+                    {
+                        name: "View Roles",
+                        value: "role"
+                    },
+                    {
+                        name: "View Employees",
+                        value: "employee"
+                    }
+                ]
             }
 
-        ]).then(function (answer) {
-            if (answer.menuVIEW === "View Departments") {
-                console.log("Viewing Departments")
-            } else if (
-                answer.menuChoice === "View Roles"
-            ) {
-                console.log("Viewing Roles")
-            } else if (
-                answer.menuChoice === "View Employees"
-            ) {
-                console.log("Viewing Employees")
-            } else {
-                connection.end();
-            }
+        ]).then(function ({ tableName }) {
+            const query = `SELECT * FROM ${tableName}`;
+            //console.log(query);
+            connection.query(query, function (err, data) {
+                console.table(data);
+
+                mainMenu();
+            })
         }
         )
 };
