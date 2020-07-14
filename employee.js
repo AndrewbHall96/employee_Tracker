@@ -41,19 +41,31 @@ function mainMenu() {
         //         }
 
     ]).then(function (answer) {
-        if (
-            answer.menuChoice === "Add"
-        ) {
-            ADD();
-        } else if (answer.menuChoice === "View") {
-            VIEW();
-        } else if (
-            answer.menuChoice === "Update"
-        ) {
-            console.log("B")
-        } else {
-            connection.end();
+        switch (answer.menuChoice) {
+            case "Add":
+                ADD();
+                break;
+            case "View":
+                VIEW();
+                break;
+            case "Update":
+                updateEmp();
+                break;
         }
+        
+        // if (
+        //     answer.menuChoice === "Add"
+        // ) {
+        //     ADD();
+        // } else if (answer.menuChoice === "View") {
+        //     VIEW();
+        // } else if (
+        //     answer.menuChoice === "Update"
+        // ) {
+        //     console.log("B")
+        // } else {
+        //     connection.end();
+        // }
         //Recursion
 
         // switch example:
@@ -82,8 +94,11 @@ function ADD() {
                     newDepartment();
                     break;
                 case "Add Role":
-
-
+                    newRole();
+                    break;
+                case "Add Employee":
+                    newEmployee();
+                    break;
             }
 
             // connection.query("INSERT INTO ")
@@ -123,36 +138,65 @@ function newDepartment() {
                 });
             });
 };
+function newRole() {
+    inquirer
+        .prompt([
+            {
+                name: "title",
+                type: "input"
+            },
+            {
+                name: "salary",
+                type: "input"
+            },
+            {
+                name: "department_id",
+                type: "input"
+            },
+            
+        ]).then(function (newRole) {
+            connection.query("INSERT INTO role(title, salary, department_id) VALUES (?, ?, ?)", [newRole.title, newRole.salary, newRole.department_id], function (err, data) {
+                if (err)
+                    throw err;
+
+                console.log(`${data.affectedRows} role added!`);
+
+                mainMenu();
+            }
+            )
+        });
+};
 function newEmployee() {
     inquirer
         .prompt([
             {
-                name: "first_name",
-                type: "input",
+                name: "First Name",
+                type: "input"
             },
             {
-                name: "last_name",
-                type: "input",
+                name: "Last Name",
+                type: "input"
             },
             {
-                name: "role_id",
-                type: "input",
+                name: "Role ID",
+                type: "input"
             },
             {
-                name: "manager_id",
-                type: "input",
+                name: "Manager ID",
+                type: "input"
             }
         ]).then(function (newEmployee) {
             connection.query("INSERT INTO employee(name) VALUES (?, ?, ?, ?)", [newEmployee.first_name, newEmployee.last_name, newEmployee.role_id, newEmployee.manager_id], function (err, data) {
                 if (err)
                     throw err;
 
-                console.log(`${data.affectedRows} department added!`);
+                console.log(`${data.affectedRows} employee added!`);
 
                 mainMenu();
-            });
+            }
+            )
         });
-};
+}
 // deconstructed way= 
 // }]).then(function({deptName}) {
 //     connection.query("INSERT INTO department('name') VALUES (?)", [deptName]
@@ -197,6 +241,7 @@ function updateEmp() {
     inquirer
         .prompt([
             {
+                message: "Would you like to update employee roles?",
                 name: "menuUPDATE",
                 type: "list",
                 choices: ["Update Departments", "Update Roles", "Update Employees"]
