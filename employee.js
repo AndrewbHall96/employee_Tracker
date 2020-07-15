@@ -185,8 +185,10 @@ function newEmployee() {
                 name: "Manager ID",
                 type: "input"
             }
-        ]).then(function (newEmployee) {
-            connection.query("INSERT INTO employee(name) VALUES (?, ?, ?, ?)", [newEmployee.first_name, newEmployee.last_name, newEmployee.role_id, newEmployee.manager_id], function (err, data) {
+
+        ]).then(function (newEmployee) { 
+            console.log("new Employee", newEmployee);
+            connection.query("INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [newEmployee["First Name"], newEmployee["Last Name"], newEmployee["Role ID"], newEmployee["Manager ID"]], function (err, data) {
                 if (err)
                     throw err;
 
