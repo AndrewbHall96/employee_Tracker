@@ -30,15 +30,6 @@ function mainMenu() {
             type: "list",
             choices: ["Add", "View", "Update", "Exit"]
         }
-        // Bonus function
-        // function mainMenu() {
-        //     inquirer.prompt([
-        //         {
-        //             message: "What would you like to do?",
-        //             name: "menuChoice",
-        //             type: "list",
-        //             choices: [  "View All Employees", "View All EMployees By Department", "View All EMployees By Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manger"]
-        //         }
 
     ]).then(function (answer) {
         switch (answer.menuChoice) {
@@ -49,31 +40,9 @@ function mainMenu() {
                 VIEW();
                 break;
             case "Update":
-                updateEmp();
+                GetEmployeesandRoles();
                 break;
         }
-        
-        // if (
-        //     answer.menuChoice === "Add"
-        // ) {
-        //     ADD();
-        // } else if (answer.menuChoice === "View") {
-        //     VIEW();
-        // } else if (
-        //     answer.menuChoice === "Update"
-        // ) {
-        //     console.log("B")
-        // } else {
-        //     connection.end();
-        // }
-        //Recursion
-
-        // switch example:
-        // switch (answer.menuChoice) {
-        //     case "View All Employees":
-        //         console.log(answer.menuChoice);
-        //         break;
-        // }
     })
 };
 
@@ -199,10 +168,6 @@ function newEmployee() {
             )
         });
 }
-// deconstructed way= 
-// }]).then(function({deptName}) {
-//     connection.query("INSERT INTO department('name') VALUES (?)", [deptName]
-// })
 
 
 function VIEW() {
@@ -239,30 +204,68 @@ function VIEW() {
         )
 };
 
-function updateEmp() {
+function UPDATE(employeeList, roleList) {
+
     inquirer
         .prompt([
             {
-                message: "Would you like to update employee roles?",
-                name: "menuUPDATE",
+                message: "Which employee would you like to update?",
+                name: "employee",
                 type: "list",
-                choices: ["Update Departments", "Update Roles", "Update Employees"]
+                choices: employeeList
+            },
+            {
+                message: "What would you like to change the role to?",
+                name: "role",
+                type: "list",
+                choices: roleList
             }
 
         ]).then(function (answer) {
-            if (answer.menuUPDATE === "Update Departments") {
-                console.log("Updating Departments")
-            } else if (
-                answer.menuUPDATE === "Update Roles"
-            ) {
-                console.log("Updating Roles")
-            } else if (
-                answer.menuUPDATE === "Update Employees"
-            ) {
-                console.log("Viewing Employees")
-            } else {
-                connection.end();
-            }
+            connection.query(
+                "UPDATE employee SET ? WHERE ?",
+                [
+                  {
+                    role_id: answer.role
+                  },
+                  {
+                    id: answer.employee
+                  }
+                ],
+                function(error) {
+                  if (error) throw err;
+                  console.log("Role updated successfully!");
+                  mainMenu();
+                }
+              );
         }
         )
 };
+
+function GetEmployeesandRoles() {
+    //
+    const queryEmployee = `SELECT * FROM employee`;
+    const queryRole = `SELECT * FROM role`;
+    //console.log(query);
+    connection.query(queryEmployee, function (err, data) {
+        //create employeeList ie: [{name: "John Doe", value: 2}, {name:"Big Bird", value: 5}] to use in Update function
+        
+        const employeeList = data.map(employee => {
+            return {
+                name: `${employee.first_name} ${employee.last_name}`,
+                value: employee.id
+            }
+        })
+        //create roleList ie:[{name: "Engineer", value: 0}, {name: "Product Owner", value: 2}]
+        connection.query(queryRole, function (err, data) {
+            const roleList = data.map(role => {
+                return {
+                    name: role.title,
+                    value: role.id
+                }
+            })
+
+            UPDATE(employeeList, roleList)
+        })
+    })
+}
